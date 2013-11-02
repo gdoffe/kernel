@@ -1,3 +1,4 @@
+
 [product]
 version = "2.0"
 machine = "EVB-2.0"
@@ -244,8 +245,8 @@ full_duplex = 0
 manual_cs = 0
 
 [spi_board1]
-modalias = "spidev"
-max_speed_hz = 12000000
+modalias = "spiadc"
+max_speed_hz = 2500000
 bus_num = 2
 chip_select = 0
 mode = 0
@@ -314,6 +315,17 @@ nand_ce7 =
 nand_spi = port:PC23<3><default><default><default>
 nand_ndqs = port:PC24<2><default><default><default>
 
+
+;----------------------------------------------------------------------------------
+;disp init configuration
+;
+;disp_mode            (0:screen0<screen0,fb0> 1:screen1<screen1,fb0> 2:two_diff_screen_diff_contents<screen0,screen1,fb0,fb1>
+;                      3:two_same_screen_diff_contets<screen0,screen1,fb0> 4:two_diff_screen_same_contents<screen0,screen1,fb0>)
+;screenx_output_type  (0:none; 1:lcd; 2:tv; 3:hdmi; 4:vga)
+;screenx_output_mode  (used for tv/hdmi output, 0:480i 1:576i 2:480p 3:576p 4:720p50 5:720p60 6:1080i50 7:1080i60 8:1080p24 9:1080p50 10:1080p60 11:pal 14:ntsc)
+;screenx_output_mode  (used for vga output, 0:1680*1050 1:1440*900 2:1360*768 3:1280*1024 4:1024*768 5:800*600 6:640*480 10:1920*1080 11:1280*720)
+;fbx format           (4:RGB655 5:RGB565 6:RGB556 7:ARGB1555 8:RGBA5551 9:RGB888 10:ARGB8888 12:ARGB4444)
+;fbx pixel sequence   (0:ARGB 1:BGRA 2:ABGR 3:RGBA) --- 0 for linux, 2 for android
 [disp_init]
 disp_init_enable = 1
 disp_mode = 0
@@ -407,7 +419,7 @@ lcd_y = 0
 lcd_dclk_freq = 0
 lcd_pwm_not_used = 0
 lcd_pwm_ch = 1
-lcd_pwm_freq = 0
+lcd_pwm_freq = 10000
 lcd_pwm_pol = 0
 lcd_if = 0
 lcd_hbp = 0
@@ -907,34 +919,60 @@ key_min = 4
 key_max = 6
 
 [gpio_para]
-gpio_used = 1
-gpio_num = 24
-gpio_pin_0 = port:PI19<0><1><default><default>
-gpio_pin_1 = port:PI18<0><1><default><default>
-gpio_pin_2 = port:PH07<0><1><default><default>
-gpio_pin_3 = port:PH06<0><1><default><default>
-gpio_pin_4 = port:PH08<0><1><default><default>
-gpio_pin_5 = port:PB02<0><1><default><default>
-gpio_pin_6 = port:PI03<0><1><default><default>
-gpio_pin_7 = port:PH09<0><1><default><default>
-gpio_pin_8 = port:PH10<0><1><default><default>
-gpio_pin_9 = port:PH05<0><1><default><default>
-gpio_pin_10 = port:PI10<0><1><default><default>
-gpio_pin_11 = port:PI12<0><1><default><default>
-gpio_pin_12 = port:PI13<0><1><default><default>
-gpio_pin_13 = port:PI11<0><1><default><default>
-gpio_pin_14 = port:PH11<0><1><default><default>
-gpio_pin_15 = port:PH12<0><1><default><default>
-gpio_pin_16 = port:PH13<0><1><default><default>
-gpio_pin_17 = port:PH14<0><1><default><default>
+gpio_used=1
+gpio_num=20
+gpio_pin_1 = port:PI18<0><1>
+gpio_pin_2 = port:PH7<0><1>
+gpio_pin_3 = port:PH6<0><1>
+gpio_pin_4 = port:PH8<0><1>
+gpio_pin_5 = port:PB2<0><1>
+gpio_pin_6 = port:PI3<0><1>
+gpio_pin_7 = port:PH9<0><1>
+gpio_pin_8 = port:PH10<0><1>
+gpio_pin_9 = port:PH5<0><1>
+gpio_pin_10 = port:PI10<0><1>
+gpio_pin_11 = port:PI12<0><1>
+gpio_pin_12 = port:PI13<0><1>
+gpio_pin_13 = port:PI11<0><1>
+; for non-arduino gpio
+gpio_pin_14 = port:PH11<0><1>
+gpio_pin_15 = port:PH12<0><1>
+gpio_pin_16 = port:PH13<0><1>
+gpio_pin_17 = port:PH14<0><1>
+; arduino leds
 gpio_pin_18 = port:PH15<1><default><default><0>
 gpio_pin_19 = port:PH16<1><default><default><0>
-gpio_pin_20 = port:PC19<0><1><default><default>
-gpio_pin_21 = port:PC21<0><1><default><default>
-gpio_pin_22 = port:PC22<0><1><default><default>
-gpio_pin_23 = port:PC20<0><1><default><default>
-; Redeclared gpio_pin_0 as gpio_pin_24, for sun4i-gpio driver
-gpio_pin_24 = port:PI19<0><1><default><default>
+; ??? dunno
+gpio_pin_20 = port:PI19<0><1>
+
+
+[leds_para]
+leds_used = 1
+leds_num = 8
+leds_pin_1 = port:PH6<1>
+leds_name_1 = "pwm0"
+leds_default_1 = 1
+leds_pin_2 = port:PB2<1>
+leds_name_2 = "pwm1"
+leds_default_2 = 1
+leds_pin_3 = port:PI3<1>
+leds_name_3 = "pwm2"
+leds_default_3 = 1
+leds_pin_4 = port:PH5<1>
+leds_name_4 = "pwm3"
+leds_default_4 = 1
+leds_pin_5 = port:PI10<1>
+leds_name_5 = "pwm4"
+leds_default_5 = 1
+leds_pin_6 = port:PI12<1>
+leds_name_6 = "pwm5"
+leds_default_6 = 1
+leds_pin_7 = port:PH15<1><default><default><0>
+leds_name_7 = "green:ph15:txled"
+leds_default_7 = 1
+leds_pin_8 = port:PH16<1><default><default><0>
+leds_name_8 = "green:ph16:rxled"
+leds_default_8 = 1
 
 [sb_pwm0]
 pwm_gpio = port:PH06<1><default><default><default>
@@ -954,3 +992,23 @@ pwm_gpio = port:PI10<1><default><default><default>
 [sb_pwm5]
 pwm_gpio = port:PI12<1><default><default><default>
 
+[dvfs_table]
+max_freq = 1200000000
+min_freq = 600000000
+
+LV_count = 5
+
+LV1_freq = 1200000000
+LV1_volt = 1600
+
+LV2_freq = 1008000000
+LV2_volt = 1400
+
+LV3_freq = 912000000
+LV3_volt = 1350
+
+LV4_freq = 864000000
+LV4_volt = 1300
+
+LV5_freq = 624000000
+LV5_volt = 1250
